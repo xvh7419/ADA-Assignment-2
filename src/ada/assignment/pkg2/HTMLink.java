@@ -55,5 +55,9 @@ public class HTMLink {
     public void setPastURLs(List<String> pastURLs) {
         this.pastURLs = pastURLs;
     }
-
+    
+    @Override
+    public String toString() {
+        return this.url + " Depth: " + this.depth + "\n";
+    }
 }

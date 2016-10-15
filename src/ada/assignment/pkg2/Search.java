@@ -32,12 +32,15 @@ public class Search {
     }
     
     public void search() {
+        //query user for a url
         System.out.println("Please specify a seed URL: ");
         String url = keyboard.nextLine();
         
+        //query user for a keyword
         System.out.println("Please specify a keyword: ");
         String keyword = keyboard.nextLine();
         
+        //query a user for depth to search to
         System.out.println("Up to what depth would you like to search for?");
         int depth = Integer.parseInt(keyboard.nextLine());
         
@@ -45,33 +48,50 @@ public class Search {
     }
     
     public Set<String> spider(String url, String keyword, int depth) {
+        //change url to HTMLink to track depth
         HTMLink firstUrl = new HTMLink(url, 0);
+        //add seed URL to pages to visit
         unvisitedPages.add(firstUrl);
         
+        //crawl if there are still unvisited pages. 
         while (!unvisitedPages.isEmpty()) {
+            //get the url to visit from unvisited pages
             HTMLink urlToVisit = unvisitedPages.poll();
             
+            //stop crawling when target depth is breached
             if(urlToVisit.getDepth() > depth) {
                 break;
             }
             
+            //get meta from URL
             String meta = spiderleg.getMeta(urlToVisit.getUrl()).toString();
+            //get substring of keywords from meta
+            String keywords = meta.substring(meta.indexOf("Keywords: ") + 3, meta.length());
             
-            if (meta.toLowerCase().contains(keyword.toLowerCase())) {
+            //if the keywords contain the keyword the user specified then add the url to the set of saved URLS
+            if (keywords.toLowerCase().contains(keyword.toLowerCase())) {
                 savedUrls.add(urlToVisit.getUrl());
                 System.out.println(urlToVisit.getUrl());
+                System.out.println(keywords);
             }
             
+            //add url to visited pages
+            if(!visitedPages.contains(urlToVisit)) {
+                visitedPages.add(urlToVisit);
+            } 
+            
+            //get all links from current url
             List<String> links = spiderleg.getHyperLink(urlToVisit.getUrl());
             for (String link : links) {                
+                //if url has not been visited and is not empty then add it to the unvisited
                 if (!visitedPages.contains(link) && !link.isEmpty()) {
                     HTMLink linkToAdd = new HTMLink(link, (urlToVisit.getDepth() + 1));
                     unvisitedPages.add(linkToAdd);
                 }
-            }
-            visitedPages.add(urlToVisit);
+            }           
         } 
         
+        //Write urls to file and console
         try {
             PrintWriter out = new PrintWriter(keyword + "Keyword Search.txt");
             out.println(savedUrls);

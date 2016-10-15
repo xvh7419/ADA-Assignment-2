@@ -105,17 +105,17 @@ public class SpiderLeg {
     public static void main(String[] args) {
         SpiderLeg sl = new SpiderLeg();
 
-        System.out.println(sl.getTitle("http://www.w3schools.com/"));
+        System.out.println(sl.getTitle("http://www.trademe.co.nz/"));
 
-        for (String a : sl.getHyperLink("http://www.w3schools.com/")) {
+        for (String a : sl.getHyperLink("http://www.trademe.co.nz/")) {
             System.out.println(a);
         }
 
-        for (String a : sl.getImages("http://www.w3schools.com/")) {
+        for (String a : sl.getImages("http://www.trademe.co.nz/")) {
             System.out.println(a);
         }
 
-        System.out.println(sl.getMeta("http://www.w3schools.com/"));
+        System.out.println(sl.getMeta("http://www.trademe.co.nz/home-living/home-décor/flowers/auction-1179356436.htm"));
     }
 
 }
