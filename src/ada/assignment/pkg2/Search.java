@@ -5,7 +5,9 @@
  */
 package ada.assignment.pkg2;
 
-import java.io.PrintWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,14 +67,16 @@ public class Search {
             
             //get meta from URL
             String meta = spiderleg.getMeta(urlToVisit.getUrl()).toString();
-            //get substring of keywords from meta
-            String keywords = meta.substring(meta.indexOf("Keywords: ") + 3, meta.length());
             
+            //check if meta was acquired or not.
+            String keywords = "";
+            if (!meta.isEmpty()) {
+                //get substring of keywords from meta, 
+                keywords = meta.substring(meta.indexOf("Keywords: ") + 9, meta.length());
+            } 
             //if the keywords contain the keyword the user specified then add the url to the set of saved URLS
             if (keywords.toLowerCase().contains(keyword.toLowerCase())) {
                 savedUrls.add(urlToVisit.getUrl());
-                System.out.println(urlToVisit.getUrl());
-                System.out.println(keywords);
             }
             
             //add url to visited pages
@@ -93,10 +97,13 @@ public class Search {
         
         //Write urls to file and console
         try {
-            PrintWriter out = new PrintWriter(keyword + "Keyword Search.txt");
-            out.println(savedUrls);
+            File linkFile = new File("Links with Meta Keyword - " + keyword + ".txt");
+            PrintStream out = new PrintStream(new FileOutputStream(linkFile));
+            for (String links : savedUrls) {
+                out.println(links);
+                System.out.println(links);
+            }
             
-            System.out.println(savedUrls);
         } catch (Exception e) {
             System.err.println(e);
         }

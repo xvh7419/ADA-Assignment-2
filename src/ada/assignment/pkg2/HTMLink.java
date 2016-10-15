@@ -58,6 +58,10 @@ public class HTMLink {
     
     @Override
     public String toString() {
-        return this.url + " Depth: " + this.depth + "\n";
+        return this.url + " Depth: " + this.depth;
+    }
+    
+    public int compareTo(HTMLink other) {
+        return this.url.compareTo(other.getUrl());
     }
 }

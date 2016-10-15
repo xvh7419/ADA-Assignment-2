@@ -61,7 +61,9 @@ public class Spider {
             }            
         }
         //print out all visited/acquired URLs
-        System.out.print(visitedPages);
+        for (HTMLink links: visitedPages) {
+            System.out.print(links);
+        }
         
     }
 
