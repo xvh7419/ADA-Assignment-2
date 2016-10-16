@@ -24,6 +24,7 @@ Q3
 Possible Changes:
 - Change Q2 so that Q3 uses that function instead of copying over the dunction with minor changes.
 - Can remove the line which prints out how many links left to search if it's annoying.
+- Add erroroneous input handling for the user
 
 Q4
 - WIP.
