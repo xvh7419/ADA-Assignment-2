@@ -37,6 +37,8 @@ public class Spider {
         //crawl if there are still unvisited pages. 
         while (!unvisitedPages.isEmpty()) {
             
+            System.out.println(unvisitedPages.size() + " link(s) left to crawl.");
+            
             //get the url to visit from unvisited pages
             HTMLink urlToVisit = unvisitedPages.poll();
             
@@ -56,13 +58,15 @@ public class Spider {
                 //if url has not been visited and is not empty then add it to the unvisited
                 if (!visitedPages.contains(link) && !link.isEmpty()) {
                     HTMLink linkToAdd = new HTMLink(link, (urlToVisit.getDepth() + 1));
-                    unvisitedPages.add(linkToAdd);
+                    if (linkToAdd.getDepth() <= MAX_DEPTH) {
+                        unvisitedPages.add(linkToAdd);
+                    }
                 }
             }            
         }
         //print out all visited/acquired URLs
         for (HTMLink links: visitedPages) {
-            System.out.print(links);
+            System.out.println(links);
         }
         
     }

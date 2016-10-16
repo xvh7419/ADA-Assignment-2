@@ -57,11 +57,14 @@ public class Search {
         
         //crawl if there are still unvisited pages. 
         while (!unvisitedPages.isEmpty()) {
+            System.out.println(unvisitedPages.size() + " link(s) left to crawl.");
+            
             //get the url to visit from unvisited pages
             HTMLink urlToVisit = unvisitedPages.poll();
             
             //stop crawling when target depth is breached
             if(urlToVisit.getDepth() > depth) {
+                System.out.println("Depth of " + depth + " exceeded.");
                 break;
             }
             
@@ -80,17 +83,17 @@ public class Search {
             }
             
             //add url to visited pages
-            if(!visitedPages.contains(urlToVisit)) {
-                visitedPages.add(urlToVisit);
-            } 
-            
+            visitedPages.add(urlToVisit);
+     
             //get all links from current url
             List<String> links = spiderleg.getHyperLink(urlToVisit.getUrl());
             for (String link : links) {                
                 //if url has not been visited and is not empty then add it to the unvisited
                 if (!visitedPages.contains(link) && !link.isEmpty()) {
                     HTMLink linkToAdd = new HTMLink(link, (urlToVisit.getDepth() + 1));
-                    unvisitedPages.add(linkToAdd);
+                    if (linkToAdd.getDepth() <= depth) {
+                        unvisitedPages.add(linkToAdd);
+                    }          
                 }
             }           
         } 
