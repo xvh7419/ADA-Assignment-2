@@ -64,4 +64,9 @@ public class HTMLink {
     public int compareTo(HTMLink other) {
         return this.url.compareTo(other.getUrl());
     }
+    
+    @Override
+    public boolean equals(Object o){
+        return this.url.equals(o);
+    }
 }

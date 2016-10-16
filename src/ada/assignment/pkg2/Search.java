@@ -23,13 +23,13 @@ public class Search {
     private Scanner keyboard = new Scanner(System.in);
     private SpiderLeg spiderleg;
     private Set<HTMLink> visitedPages;
-    private Queue<HTMLink> unvisitedPages;
+    private Queue<HTMLink> pagesToVisit;
     private Set<String> savedUrls;
     
     public Search() {
         spiderleg = new SpiderLeg();
         this.visitedPages = new HashSet();
-        this.unvisitedPages = new LinkedList();
+        this.pagesToVisit = new LinkedList();
         savedUrls = new HashSet<>();
     }
     
@@ -53,14 +53,14 @@ public class Search {
         //change url to HTMLink to track depth
         HTMLink firstUrl = new HTMLink(url, 0);
         //add seed URL to pages to visit
-        unvisitedPages.add(firstUrl);
+        pagesToVisit.add(firstUrl);
         
         //crawl if there are still unvisited pages. 
-        while (!unvisitedPages.isEmpty()) {
-            System.out.println(unvisitedPages.size() + " link(s) left to crawl.");
+        while (!pagesToVisit.isEmpty()) {
+            System.out.println(pagesToVisit.size() + " link(s) left to crawl.");
             
             //get the url to visit from unvisited pages
-            HTMLink urlToVisit = unvisitedPages.poll();
+            HTMLink urlToVisit = pagesToVisit.poll();
             
             //stop crawling when target depth is breached
             if(urlToVisit.getDepth() > depth) {
@@ -89,10 +89,11 @@ public class Search {
             List<String> links = spiderleg.getHyperLink(urlToVisit.getUrl());
             for (String link : links) {                
                 //if url has not been visited and is not empty then add it to the unvisited
-                if (!visitedPages.contains(link) && !link.isEmpty()) {
-                    HTMLink linkToAdd = new HTMLink(link, (urlToVisit.getDepth() + 1));
+                HTMLink linkToAdd = new HTMLink(link, (urlToVisit.getDepth() + 1));
+                if (!visitedPages.contains(linkToAdd) && !link.isEmpty()) {
+                    
                     if (linkToAdd.getDepth() <= depth) {
-                        unvisitedPages.add(linkToAdd);
+                        pagesToVisit.add(linkToAdd);
                     }          
                 }
             }           
