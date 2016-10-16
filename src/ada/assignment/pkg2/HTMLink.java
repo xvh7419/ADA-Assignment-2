@@ -7,6 +7,7 @@ package ada.assignment.pkg2;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class to associate a URL link with an int depth. Also stores parent URLs in
@@ -67,6 +68,16 @@ public class HTMLink {
     
     @Override
     public boolean equals(Object o){
-        return this.url.equals(o);
+        if (o instanceof HTMLink) {
+            return this.url.equals(((HTMLink) o).getUrl());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 61 * hash + Objects.hashCode(this.url);
+        return hash;
     }
 }
